@@ -4,7 +4,7 @@ class ShopifyCli < Formula
   desc "Shopify App CLI helps you build Shopify apps faster"
   homepage "https://github.com/mkevinosullivan/shopify-app-cli"
   url "https://github.com/mkevinosullivan/shopify-app-cli/blob/convert_to_gem/archive/shopify-cli-0.0.2.tar.gz"
-  sha256 "19913cf549228979459428e442dbd340ae58d99eb0de93eca705f1e89d2097b6"
+  sha256 "056f2c8336a7d1edfc1b1896979f2f99aa1ba6eea13f06339cb9c89a504a8448"
   version "0.0.2"
 
   depends_on "ruby"
