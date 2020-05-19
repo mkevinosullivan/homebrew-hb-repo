@@ -1,2 +1,2 @@
-# homebrew-hb-osx
-Creating a homebrew tap for `weather`
+# homebrew-hb-repo
+Creating a homebrew tap for testing
