@@ -1,19 +1,39 @@
-# from https://tech.cars.com/distributing-your-home-grown-tools-to-the-masses-with-homebrew-acb7a62518a8
-
 class ShopifyCli < Formula
-  desc "Shopify App CLI helps you build Shopify apps faster"
-  homepage "https://github.com/mkevinosullivan/shopify-app-cli"
-  url "https://github.com/mkevinosullivan/shopify-app-cli/raw/gem_to_brew/archive/shopify-cli-0.0.2.tar.gz"
-  sha256 "0e546ba193b9763e59a2ef5d92130baa4bfc4f3aaa1197015718927c3a566544"
-  version "0.0.2"
-
-  depends_on "ruby"
+  version '1.12.0'
+  homepage 'https://shopify.github.io/shopify-app-cli'
+  url "https://rubygems.org/downloads/shopify-cli-#{version}.gem"
+  sha256 '6e5e065ce51c56124e758d57a2b3c7aa746ac9ab86e2be459e0c91f8ead0ea70'
+  desc <<~DESC
+    Shopify CLI helps you build Shopify apps faster. It quickly scaffolds Node.js
+    and Ruby on Rails embedded apps. It also automates many common tasks in the
+    development process and lets you quickly add popular features, such as billing
+    and webhooks.
+  DESC
 
   bottle :unneeded
 
+  depends_on 'git' => '2.13'
+
   def install
-    # system('gem', 'install', 'shopify-app-cli')
-    libexec.install Dir["*"]
-    bin.write_exec_script (libexec/"exe/shopify-cli")
+    system 'tar', '-xf', cached_download, '--directory', buildpath
+
+    (buildpath/'src').mkpath
+    (buildpath/'symlink').mkpath
+    system 'tar', '-xzf', buildpath/'data.tar.gz', '--directory', buildpath/'src'
+
+    prefix.install buildpath/'src'
+
+    exe = prefix/'src/bin/shopify'
+    script = buildpath/'symlink/shopify'
+
+    script_content = <<~SCRIPT
+      #!/usr/bin/env bash
+      #{RbConfig.ruby} --disable=gems -I #{prefix} #{exe} $@
+    SCRIPT
+
+    File.write(script, script_content)
+    FileUtils.chmod("+x", script)
+
+    bin.install script
   end
 end
