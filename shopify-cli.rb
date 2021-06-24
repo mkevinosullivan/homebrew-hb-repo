@@ -3,8 +3,8 @@
 # Modified from formula originally generated via `brew-gem` using
 # `brew gem formula shopify-cli`
 
-require 'formula'
-require 'fileutils'
+require "formula"
+require "fileutils"
 
 class ShopifyCli < Formula
   module RubyBin
@@ -19,7 +19,7 @@ class ShopifyCli < Formula
     def fetch(_timeout: nil, **_options)
       ohai("Fetching shopify-cli from gem source")
       cache.cd do
-        ENV['GEM_SPEC_CACHE'] = "#{cache}/gem_spec_cache"
+        ENV["GEM_SPEC_CACHE"] = "#{cache}/gem_spec_cache"
         system("#{ruby_bin}/gem", "fetch", "shopify-cli", "--version", gem_version)
       end
     end
@@ -47,8 +47,8 @@ class ShopifyCli < Formula
   include RubyBin
 
   url "shopify-cli", using: RubyGemsDownloadStrategy
-  version '2.0.0.beta.2'
-  sha256 '0b112cd276497b9eaf4c3886c737fb9567a5df01b66453bd89cf8e28508eff42'
+  version "2.0.0.beta.2"
+  sha256 "0b112cd276497b9eaf4c3886c737fb9567a5df01b66453bd89cf8e28508eff42"
   depends_on "ruby"
   depends_on "git"
 
@@ -56,13 +56,13 @@ class ShopifyCli < Formula
     # set GEM_HOME and GEM_PATH to make sure we package all the dependent gems
     # together without accidently picking up other gems on the gem path since
     # they might not be there if, say, we change to a different rvm gemset
-    ENV['GEM_HOME'] = prefix.to_s
-    ENV['GEM_PATH'] = prefix.to_s
+    ENV["GEM_HOME"] = prefix.to_s
+    ENV["GEM_PATH"] = prefix.to_s
 
     # Use /usr/local/bin at the front of the path instead of Homebrew shims,
     # which mess with Ruby's own compiler config when building native extensions
     if defined?(HOMEBREW_SHIMS_PATH)
-      ENV['PATH'] = ENV['PATH'].sub(HOMEBREW_SHIMS_PATH.to_s, '/usr/local/bin')
+      ENV["PATH"] = ENV["PATH"].sub(HOMEBREW_SHIMS_PATH.to_s, "/usr/local/bin")
     end
 
     system(
@@ -76,7 +76,7 @@ class ShopifyCli < Formula
       "--bindir", bin,
       "--",
       "--skip-cli-build"
-      )
+    )
 
     raise "gem install 'shopify-cli' failed with status #{$CHILD_STATUS.exitstatus}" unless $CHILD_STATUS.success?
 
@@ -88,13 +88,13 @@ class ShopifyCli < Formula
     ruby_libs = Dir.glob("#{prefix}/gems/*/lib")
     exe = "shopify"
     file = Pathname.new("#{brew_gem_prefix}/bin/#{exe}")
-    (bin + file.basename).open('w') do |f|
+    (bin + file.basename).open("w") do |f|
       f << <<~RUBY
         #!#{ruby_bin}/ruby --disable-gems
         ENV['GEM_HOME']="#{prefix}"
         ENV['GEM_PATH']="#{prefix}"
         require 'rubygems'
-        $:.unshift(#{ruby_libs.map(&:inspect).join(',')})
+        $:.unshift(#{ruby_libs.map(&:inspect).join(",")})
         load "#{file}"
       RUBY
     end
