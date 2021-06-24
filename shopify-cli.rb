@@ -33,8 +33,7 @@ class ShopifyCli < Formula
     end
 
     def gem_version
-      return @version if defined?(@version) && @version
-      @version = @resource.version if defined?(@resource)
+      @version ||= @resource&.version if defined?(@resource)
       raise "Unable to determine version; did Homebrew change?" unless @version
       @version
     end
