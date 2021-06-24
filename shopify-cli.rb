@@ -50,6 +50,7 @@ class ShopifyCli < Formula
   version '2.0.0.beta.2'
   sha256 '0b112cd276497b9eaf4c3886c737fb9567a5df01b66453bd89cf8e28508eff42'
   depends_on "ruby"
+  depends_on "git"
 
   def install
     # set GEM_HOME and GEM_PATH to make sure we package all the dependent gems
